@@ -1,0 +1,7 @@
+flask
+pyrebase
+deepcut
+flask_cors
+flask_restful
+tensorflow
+keras
