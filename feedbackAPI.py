@@ -75,7 +75,9 @@ def getrequest():
         pointer = 0
     else:
         pointer = len(length.val())
-    db.child("users").child(data["uid"]).child("course").child(data["cid"]).child("Feedback").child(data["attendanceId"]).child(pointer).set(json.loads(insert))
+		
+	#db.child("users").child(data["uid"]).child("course").child(data["cid"]).child("Feedback").child(data["attendanceId"]).child(pointer).set(json.loads(insert))
+    db.child("users").child(data["uid"]).child("course").child(data["cid"]).child("Feedback").child(data["attendanceId"]).push(json.loads(insert))
     return jsonify({'status':'201'}) , 201
 
 
