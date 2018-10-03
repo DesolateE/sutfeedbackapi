@@ -67,10 +67,6 @@ def getrequest():
     else:
         label = "neutral"
 
-    print(cut)  
-    print(neulist)
-    print(poslist)
-    print(neglist)
     token = {'positive': poslist , 'neutral': neulist, 'negative': neglist}
     length = db.child("users").child(data["uid"]).child("course").child(data["cid"]).child("Feedback").child(data["attendanceId"]).get()
     insert = json.dumps({'date': data["date"], 'comment': data["comment"], 'feeling': data["feeling"], 'classLabel': label, 'token': token , 'rating': data["ratingList"]}, ensure_ascii=False)
