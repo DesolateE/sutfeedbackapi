@@ -14,10 +14,10 @@ CORS(app)
 
 
 configclass = {
-  "apiKey": "AIzaSyB5M0bxNI8kj3enMyPAgaksUVXU8qrNa4M",
-  "authDomain": "classattendence-c4e10.firebaseapp.com",
-  "databaseURL": "https://classattendence-c4e10.firebaseio.com",
-  "storageBucket": "classattendence-c4e10.appspot.com"
+  "apiKey": "AIzaSyB2dzuzgKVykU54B6ODJnqWCuRNdoENzkk",
+  "authDomain": "sut-classroom.firebaseapp.com",
+  "databaseURL": "https://sut-classroom.firebaseio.com",
+  "storageBucket": "sut-classroom.appspot.com"
 }
 positive_word = ['สอนเข้าใจ','ไม่ยาก','ชอบ','สอนดี','น่าสนใจ','สอนสนุก','สนุก'
                  ,'เยี่ยม','ดี','เข้าใจ','เข้าใจดี']
