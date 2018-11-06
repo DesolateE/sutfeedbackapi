@@ -5,7 +5,9 @@ from flask_restful import Resource, Api
 import json
 import pyrebase
 import deepcut
-import stop
+import stopword
+import positiveword
+import negativeword
 import os
 
 app = Flask(__name__)
@@ -19,10 +21,6 @@ configclass = {
   "databaseURL": "https://sut-classroom.firebaseio.com",
   "storageBucket": "sut-classroom.appspot.com"
 }
-positive_word = ['สอนเข้าใจ','ไม่ยาก','ชอบ','สอนดี','น่าสนใจ','สอนสนุก','สนุก'
-                 ,'เยี่ยม','ดี','เข้าใจ','เข้าใจดี']
-negative_word = ['ง่วง','สอนเร็ว','สอบยาก','ข้อสอบยาก','เสียงเบา','พูดเสียงเบา','จดไม่ทัน'
-                 ,'พูดเร็ว','ไม่ค่อยเข้าใจ','งานเยอะ','ปล่อยช้า','ไม่เข้าใจ','ยาก','ไม่ได้ยิน']
 
 @app.route("/")
 def hello():
@@ -36,18 +34,18 @@ def getrequest():
     firebase = pyrebase.initialize_app(configclass)
     db = firebase.database()
     word = deepcut.tokenize(data["comment"], custom_dict='custom_dict.txt')
-    cut = [w for w in word if not w in stop.stopword]
+    cut = [w for w in word if not w in stopword.stopword]
     poslist = []
     neglist = []
     neulist = cut.copy()
     poscount = 0
     negcount = 0
     for y in cut:
-        for pos in positive_word:
+        for pos in positiveword.positive_word:
             if y == pos:
                 poscount += 1
                 poslist.append(y)
-        for neg in negative_word:
+        for neg in negativeword.negative_word:
             if y == neg:
                 negcount += 1
                 neglist.append(y)
@@ -68,15 +66,8 @@ def getrequest():
         label = "neutral"
 
     token = {'positive': poslist , 'neutral': neulist, 'negative': neglist}
-    length = db.child("users").child(data["uid"]).child("course").child(data["cid"]).child("Feedback").child(data["attendanceId"]).get()
     insert = json.dumps({'date': data["date"], 'comment': data["comment"], 'feeling': data["feeling"], 'classLabel': label, 'token': token , 'rating': data["ratingList"]}, ensure_ascii=False)
-    print(insert)
-    if length.val() == None:
-        pointer = 0
-    else:
-        pointer = len(length.val())
 		
-	#db.child("users").child(data["uid"]).child("course").child(data["cid"]).child("Feedback").child(data["attendanceId"]).child(pointer).set(json.loads(insert))
     db.child("users").child(data["uid"]).child("course").child(data["cid"]).child("Feedback").child(data["attendanceId"]).push(json.loads(insert))
     return jsonify({'status':'201'}) , 201
 
